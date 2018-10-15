@@ -13,7 +13,7 @@ class LegislationScraperItem(scrapy.Item):
     bill_name = scrapy.Field()
     bill_number = scrapy.Field()
     url = scrapy.Field()
-    sponser = scrapy.Field()
+    sponsor = scrapy.Field()
     status = scrapy.Field()
     committee = scrapy.Field()
     broad_subjects = scrapy.Field()
