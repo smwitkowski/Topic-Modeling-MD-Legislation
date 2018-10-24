@@ -65,7 +65,7 @@ ROBOTSTXT_OBEY = True
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'legislation_scraper.pipelines.bill_download': 300,
+    'legislation_scraper.pipelines.LegislationScraperPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

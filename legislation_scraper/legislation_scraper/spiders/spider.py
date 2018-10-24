@@ -1,5 +1,6 @@
 import scrapy
 from scrapy.spiders import CrawlSpider, Rule
+from scrapy.linkextractors import LinkExtractor
 from legislation_scraper.items import LegislationScraperItem
 
 
@@ -23,7 +24,7 @@ class LegislationSpider(CrawlSpider):
     ]
 
     rules = (
-        Rule(LinkExtractor(allow=('//table[@class = "grid"]//tr/td[1]/a[1]', callback = 'parse_item')))
+        Rule(LinkExtractor(allow=('//table[@class = "grid"]//tr/td[1]/a[1]/@href')), callback='parse_item', follow = True),
     )
 
     def parse_item(self, response):
@@ -36,3 +37,4 @@ class LegislationSpider(CrawlSpider):
         item['committee'] = response.xpath('//table[@class = "subcomm"]//td/a/text()').extract()
         item['broad_subjects'] = response.xpath('//table[@class = "billsum"]//tr[descendant::text()[contains(.,"Broad Subject")]]/td/a/text()')
         item['narrow_subjects'] = response.xpath('//table[@class = "billsum"]//tr[descendant::text()[contains(.,"Narrow Subject")]]/td/a/text()').extract()
+        yield item
