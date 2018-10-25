@@ -1,4 +1,6 @@
 import scrapy
+from scrapy.contrib.linkextractors import LinkExtractor
+from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from legislation_scraper.items import LegislationScraperItem
@@ -23,9 +25,9 @@ class LegislationSpider(CrawlSpider):
         'http://mgaleg.maryland.gov/webmga/frmMain.aspx?id=w%26m&stab=02&pid=cmtepage&tab=subject3&ys=2018RS'
     ]
 
-    rules = (
-        Rule(LinkExtractor(allow=('//table[@class = "grid"]//tr/td[1]/a[1]/@href')), callback='parse_item', follow = True),
-    )
+    rules = [
+        Rule(LinkExtractor(restrict_xpaths='//table[@class = "grid"]//tr/td[1]/a[1]'), callback='parse_item', follow=True)
+    ]
 
     def parse_item(self, response):
         item = LegislationScraperItem()
