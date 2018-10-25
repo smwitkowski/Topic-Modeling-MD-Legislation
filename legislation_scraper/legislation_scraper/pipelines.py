@@ -9,7 +9,7 @@ import requests
 class LegislationScraperPipeline(object):
 
     def bill_download(self, item, spider):
-        url = item.get('pdf_url')
+        url = item['url']
         bill_number = item.get('bill_number')
         save_loc = "C:\\Users\\switkowski\\Documents\\Projects\\Topic - Model - MD - Legislation\\data\\"
         r = requests.get(url, stream = True)
