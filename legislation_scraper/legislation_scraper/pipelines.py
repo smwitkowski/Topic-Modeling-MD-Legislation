@@ -8,7 +8,7 @@ import requests
 
 class LegislationScraperPipeline(object):
 
-    def parse_item(self, item, spider):
+    def process_item(self, item, spider):
         url = item['url']
         bill_number = item.get('bill_number')
         save_loc = "C:\\Users\\switkowski\\Documents\\Projects\\Topic - Model - MD - Legislation\\data\\"
