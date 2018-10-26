@@ -10,7 +10,7 @@ class LegislationScraperPipeline(object):
 
     def process_item(self, item, spider):
         url = item['url']
-        bill_number = item.get('bill_number')
+        bill_number = item['bill_number']
         save_loc = "C:\\Users\\switkowski\\Documents\\Projects\\Topic - Model - MD - Legislation\\data\\"
         r = requests.get(url, stream = True)
         with open(save_loc + bill_number + '.pdf', 'wb') as f:
