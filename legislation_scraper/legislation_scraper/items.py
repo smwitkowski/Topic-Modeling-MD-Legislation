@@ -18,4 +18,5 @@ class LegislationScraperItem(scrapy.Item):
     committee = scrapy.Field()
     broad_subjects = scrapy.Field()
     narrow_subjects = scrapy.Field()
+    purpose = scrapy.Field()
     pass
