@@ -14,25 +14,27 @@ class LegislationScraperPipeline(object):
     def process_item(self, item, spider):
         url = item['url']
         bill_number = item['bill_number'][0]
-        save_loc = "C:\\Users\\switkowski\\Documents\\Projects\\Topic-Model-MD-Legislation\\data\\"
         r = requests.get(url, stream = True)
-        pdf_filename = save_loc + bill_number + '.pdf'
-        txt_filename = save_loc + bill_number + '.txt'
+        pdf_filename = 'data\\' + bill_number + '.pdf'
+        txt_filename = 'data\\' + bill_number + '.txt'
         with open(pdf_filename, 'wb') as f:
             f.write(r.content)
-        pdf2txt_path = 'pdf2txt.py'
+        pdf2txt_path = 'legislation_scraper/pdf2txt.py'
         print("python " + pdf2txt_path + " -o " + txt_filename + " " + pdf_filename)
         os.system("python " + pdf2txt_path + " -o " + txt_filename + " " + pdf_filename)
+        while not os.path.exists(txt_filename):
+            time.sleep(0.001)
         file = open(txt_filename, 'r', encoding='utf8')
         filetext = file.read()
         filetext = filetext.replace('\n', '')
         filetext = filetext.replace('\r', '')
         filetext = ''.join(filetext)
-        mat = re.search(r'(?=(FOR)).+?(?=( BY| (1) SECTION 1.))', filetext)
+        mat = re.search(r'(?=(FOR)).+?(?=( BY| \(1\) SECTION 1.))', filetext)
         if mat:
             item['purpose'] = ''.join(mat.group(0))
         else:
             item['purpose'] = ""
-        del pdf_filename
-        del txt_filename
+        file.close()
+        os.remove(pdf_filename)
+        os.remove(txt_filename)
         return item
