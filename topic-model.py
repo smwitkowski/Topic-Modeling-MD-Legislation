@@ -22,4 +22,16 @@ def preprocess_text(text):
     return result
 
 
-[preprocess_text(purpose) for purpose in purposes]
+processed_docs = [preprocess_text(purpose) for purpose in purposes]
+
+dictionary = gensim.corpora.Dictionary(processed_docs)
+dictionary.filter_extremes()
+corpus = [dictionary.doc2bow(doc) for doc in processed_docs]
+
+tfidf = gensim.models.TfidfModel(corpus)
+corpus_tfidf = tfidf[corpus]
+
+from pprint import pprint
+for doc in corpus_tfidf:
+    pprint(doc)
+    break
