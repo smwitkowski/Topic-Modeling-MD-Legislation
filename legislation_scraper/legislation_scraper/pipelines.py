@@ -29,7 +29,7 @@ class LegislationScraperPipeline(object):
         filetext = filetext.replace('\n', '')
         filetext = filetext.replace('\r', '')
         filetext = ''.join(filetext)
-        mat = re.search(r'(?=(FOR)).+?(?=( BY| (|\(1\)) SECTION 1.| WHEREAS| EXPLANATION))', filetext)
+        mat = re.search(r'(?=(FOR|AN ACT)).+?(?=( BY|(|\(1\) )SECTION 1.| WHEREAS| EXPLANATION))', filetext)
         if mat:
             item['purpose'] = ''.join(mat.group(0))
         else:
