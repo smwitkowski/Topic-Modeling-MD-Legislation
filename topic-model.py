@@ -21,6 +21,8 @@ def preprocess_text(text):
             result.append(lemmatize_stemming(token))
     return result
 
+data = pd.read_csv('C:\\Users\\switkowski\\Documents\\Projects\\Topic-Model-MD-Legislation\\legislation_scraper\\data\\bill_data.csv')
+purposes = data[~data.purpose.isnull()].purpose.tolist()
 
 processed_docs = [preprocess_text(purpose) for purpose in purposes]
 
@@ -30,8 +32,5 @@ corpus = [dictionary.doc2bow(doc) for doc in processed_docs]
 
 tfidf = gensim.models.TfidfModel(corpus)
 corpus_tfidf = tfidf[corpus]
-
-from pprint import pprint
-for doc in corpus_tfidf:
-    pprint(doc)
-    break
+lda_model = gensim.models.LdaMulticore(
+    corpus_tfidf, num_topics=2, id2word=dictionary, passes=2, workers=3)
