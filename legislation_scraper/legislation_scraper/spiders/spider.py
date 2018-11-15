@@ -1,6 +1,3 @@
-import scrapy
-from scrapy.contrib.linkextractors import LinkExtractor
-from scrapy.contrib.spiders import CrawlSpider, Rule
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from legislation_scraper.items import LegislationScraperItem
@@ -26,17 +23,26 @@ class LegislationSpider(CrawlSpider):
     ]
 
     rules = [
-        Rule(LinkExtractor(restrict_xpaths='//table[@class = "grid"]//tr/td[1]/a[1]'), callback='parse_item', follow=True)
+        Rule(LinkExtractor(
+            restrict_xpaths='//table[@class = "grid"]//tr/td[1]/a[1]'), callback='parse_item', follow=True)
     ]
 
     def parse_item(self, response):
         item = LegislationScraperItem()
-        item['bill_name'] = response.xpath('//table[@class = "billheader"]//tr[1]/td[3]/h3/text()').extract()
-        item['bill_number'] = response.xpath('//table[@class = "billheader"]//tr[2]/td[1]/h2/a/text()').extract()
-        item['url'] = ''.join(["http://mgaleg.maryland.gov", response.xpath('//table[@class = "billheader"]//tr[2]/td[1]/h2/a/@href').extract()[0]])
-        item['sponsor'] = response.xpath('//table[@class = "billheader"]//tr[2]/td[3]/h3/a/text()').extract()
-        item['status'] = response.xpath('//table[@class = "billheader"]//tr[3]/td[3]/h3/text()').extract()
-        item['committee'] = response.xpath('//table[@class = "subcomm"]//td/a/text()').extract()
-        item['broad_subjects'] = response.xpath('//table[@class = "billsum"]//tr[descendant::text()[contains(.,"Broad Subject")]]/td/a/text()').extract()
-        item['narrow_subjects'] = response.xpath('//table[@class = "billsum"]//tr[descendant::text()[contains(.,"Narrow Subject")]]/td/a/text()').extract()
+        item['bill_name'] = response.xpath(
+            '//table[@class = "billheader"]//tr[1]/td[3]/h3/text()').extract()
+        item['bill_number'] = response.xpath(
+            '//table[@class = "billheader"]//tr[2]/td[1]/h2/a/text()').extract()
+        item['url'] = ''.join(["http://mgaleg.maryland.gov", response.xpath(
+            '//table[@class = "billheader"]//tr[2]/td[1]/h2/a/@href').extract()[0]])
+        item['sponsor'] = response.xpath(
+            '//table[@class = "billheader"]//tr[2]/td[3]/h3/a/text()').extract()
+        item['status'] = response.xpath(
+            '//table[@class = "billheader"]//tr[3]/td[3]/h3/text()').extract()
+        item['committee'] = response.xpath(
+            '//table[@class = "subcomm"]//td/a/text()').extract()
+        item['broad_subjects'] = response.xpath(
+            '//table[@class = "billsum"]//tr[descendant::text()[contains(.,"Broad Subject")]]/td/a/text()').extract()
+        item['narrow_subjects'] = response.xpath(
+            '//table[@class = "billsum"]//tr[descendant::text()[contains(.,"Narrow Subject")]]/td/a/text()').extract()
         yield item
